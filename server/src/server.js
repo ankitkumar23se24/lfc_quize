@@ -1,0 +1,12 @@
+import { env } from './config/env.js';
+import http from 'http';
+import mongoose from 'mongoose';
+import { Server } from 'socket.io';
+import app from './app.js';
+import { registerSocket } from './sockets/index.js';
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: env.clientOrigin } });
+app.set('io', io);
+registerSocket(io);
+await mongoose.connect(env.mongoUri);
+server.listen(env.port,'0.0.0.0', () => console.log('API on', env.port));

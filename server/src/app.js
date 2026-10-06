@@ -1,0 +1,11 @@
+import express from 'express';
+import cors from 'cors';
+import { env } from './config/env.js';
+import authRoutes from './routes/auth.routes.js';
+import quizRoutes from './routes/quiz.routes.js';
+import sessionRoutes from './routes/session.routes.js';
+const app = express();
+app.use(cors({ origin: env.clientOrigin })); app.use(express.json({ limit: '2mb' }));
+app.use('/api', authRoutes, quizRoutes, sessionRoutes);
+app.get('/health', (_q, res) => res.json({ ok: true }));
+export default app;

@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+body{@apply bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-100 antialiased}
+.btn{@apply rounded-xl px-5 py-3 font-bold bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-40 transition}
+.card{@apply rounded-2xl bg-white dark:bg-stone-900 shadow p-5}
+.inp{@apply w-full rounded-xl border border-stone-300 dark:border-stone-700 bg-transparent px-4 py-3}
+:root { color-scheme: light; }
+.dark { color-scheme: dark; }
+select.inp option { background: #ffffff; color: #1c1917; }
+.dark select.inp option { background: #1c1917; color: #f5f5f4; }
