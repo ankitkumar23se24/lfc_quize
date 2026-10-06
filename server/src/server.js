@@ -4,9 +4,30 @@ import mongoose from 'mongoose';
 import { Server } from 'socket.io';
 import app from './app.js';
 import { registerSocket } from './sockets/index.js';
+
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: env.clientOrigin } });
+
+const io = new Server(server, {
+  cors: { origin: env.clientOrigin }
+});
+
 app.set('io', io);
 registerSocket(io);
-await mongoose.connect(env.mongoUri);
-server.listen(env.port,'0.0.0.0', () => console.log('API on', env.port));
+
+console.log('MONGO_URI exists:', Boolean(env.mongoUri));
+console.log('CLIENT_ORIGIN:', env.clientOrigin);
+
+try {
+  await mongoose.connect(env.mongoUri, {
+    serverSelectionTimeoutMS: 10000
+  });
+
+  console.log('MongoDB connected successfully');
+} catch (err) {
+  console.error('MongoDB connection FAILED:', err);
+  throw err;
+}
+
+server.listen(env.port, '0.0.0.0', () => {
+  console.log('API on', env.port);
+});
